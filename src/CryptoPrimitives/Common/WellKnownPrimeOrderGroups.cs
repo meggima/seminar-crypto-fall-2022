@@ -1,4 +1,4 @@
-﻿namespace CryptoPrimitives.HomomorphicEncryption;
+﻿namespace CryptoPrimitives.Common;
 
 public static class WellKnownPrimeOrderGroups
 {

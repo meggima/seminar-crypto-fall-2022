@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Numerics;
 
-namespace CryptoPrimitives.HomomorphicEncryption;
+namespace CryptoPrimitives.Common;
 
 /// <summary>
 ///     Represents a group of prime order based on a generator.
