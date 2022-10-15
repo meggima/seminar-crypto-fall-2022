@@ -5,6 +5,7 @@ namespace CryptoPrimitives.BlindSignature;
 
 public class PrimalityChecker : IPrimalityChecker
 {
+    private const int Trials = 5;
     private readonly IRandom _random;
 
     public PrimalityChecker(IRandom random)
@@ -43,9 +44,10 @@ public class PrimalityChecker : IPrimalityChecker
             s += 1;
         }
 
-        for (int trials = 0; trials < 5; trials++)
+        for (int trials = 0; trials < Trials; trials++)
         {
-            BigInteger a = _random.GetRandomNumber(number - 1);
+            // To get the random number into range [2, ... , n-2]
+            BigInteger a = 2 + _random.GetRandomNumber(number - 4);
             BigInteger x = BigInteger.ModPow(a, d, number);
 
             if (x == 1 || x == number - 1)
