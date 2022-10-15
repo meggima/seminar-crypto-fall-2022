@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Security.Cryptography;
 
-namespace CryptoPrimitives.BlindSignature;
+namespace CryptoPrimitives.Common;
 
 public class Random : IRandom
 {

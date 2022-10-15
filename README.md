@@ -3,6 +3,7 @@
 This project implements various cryptographic protocols that can be used in applications like electronic voting:
 
 - Blind signatures based on RSA (see [Blind RSA signatures](https://en.wikipedia.org/wiki/Blind_signature#Blind_RSA_signatures))
+- ElGamal cryposystem with homomorphic multiplication
 
 The project was created during the seminar "Cryptography and Data Security: E-Voting" at the university of Bern, Switzerland in fall 2022.
 

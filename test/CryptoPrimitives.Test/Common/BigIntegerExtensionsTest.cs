@@ -1,9 +1,9 @@
-﻿using CryptoPrimitives.BlindSignature;
+﻿using CryptoPrimitives.Common;
 using FluentAssertions;
 using System.Numerics;
 using Xunit;
 
-namespace CryptoPrimitives.Test.BlindSignature;
+namespace CryptoPrimitives.Test.Common;
 
 public class BigIntegerExtensionsTest
 {

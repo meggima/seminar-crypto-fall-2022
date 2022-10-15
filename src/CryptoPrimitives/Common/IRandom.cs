@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace CryptoPrimitives.BlindSignature;
+namespace CryptoPrimitives.Common;
 
 public interface IRandom
 {

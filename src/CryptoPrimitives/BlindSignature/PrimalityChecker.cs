@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using CryptoPrimitives.Common;
 
 namespace CryptoPrimitives.BlindSignature;
 

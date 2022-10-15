@@ -1,11 +1,12 @@
 ﻿using CryptoPrimitives.BlindSignature;
+using CryptoPrimitives.Common;
 using FluentAssertions;
 using NSubstitute;
 using System.Numerics;
 using System.Security.Cryptography;
 using Xunit;
 using Xunit.Abstractions;
-using Random = CryptoPrimitives.BlindSignature.Random;
+using Random = CryptoPrimitives.Common.Random;
 
 namespace CryptoPrimitives.Test.BlindSignature;
 
