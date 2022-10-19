@@ -3,7 +3,6 @@ using CryptoPrimitives.Common;
 using FluentAssertions;
 using NSubstitute;
 using System.Numerics;
-using System.Security.Cryptography;
 using Xunit;
 using Xunit.Abstractions;
 using Random = CryptoPrimitives.Common.Random;
@@ -59,12 +58,14 @@ public class RSABlindSignerTest
         _testOutputHelper.WriteLine($"Public key: ({keys.PublicKey.N}, {keys.PublicKey.PublicExponent})");
         _testOutputHelper.WriteLine($"Private key: ({keys.PrivateKey.N}, {keys.PrivateKey.PrivateExponent})");
 
-        byte[] message = CreateMessage();
+        byte[] message = TestUtils.CreateMessage();
+
+        _testOutputHelper.WriteLine($"Message: 0x{Convert.ToHexString(message)}");
 
         // Act
-        (byte[] BlindedMessage, BigInteger UnblindingFactor) blinded = rsaBlindSigner.Blind(message, keys.PublicKey);
+        (byte[] BlindedMessage, BigInteger BlindingFactor) blinded = rsaBlindSigner.Blind(message, keys.PublicKey);
         BigInteger blindSignature = rsaBlindSigner.Sign(blinded.BlindedMessage, keys.PrivateKey);
-        BigInteger signature = rsaBlindSigner.Unblind(blindSignature, blinded.UnblindingFactor, keys.PublicKey);
+        BigInteger signature = rsaBlindSigner.Unblind(blindSignature, blinded.BlindingFactor, keys.PublicKey);
 
         bool result = rsaBlindSigner.Verify(signature, message, keys.PublicKey);
 
@@ -72,10 +73,33 @@ public class RSABlindSignerTest
         result.Should().BeTrue();
     }
 
-    private static byte[] CreateMessage(int length = 100)
+    [Fact]
+    public void Signgin_ShouldFail_WhenWrongMessage()
     {
-        byte[] message = new byte[length];
-        RandomNumberGenerator.Fill(message);
-        return message;
+        // Arrange
+        Random random = new Random();
+        RSABlindSigner rsaBlindSigner = new(random, new PrimalityChecker(random));
+
+        (RSAPublicKey PublicKey, RSAPrivateKey PrivateKey) keys = rsaBlindSigner.GenerateKey(100);
+
+        _testOutputHelper.WriteLine($"Public key: ({keys.PublicKey.N}, {keys.PublicKey.PublicExponent})");
+        _testOutputHelper.WriteLine($"Private key: ({keys.PrivateKey.N}, {keys.PrivateKey.PrivateExponent})");
+
+        byte[] message1 = TestUtils.CreateMessage();
+        byte[] message2 = TestUtils.CreateMessage();
+
+        _testOutputHelper.WriteLine($"Message1: 0x{Convert.ToHexString(message1)}");
+        _testOutputHelper.WriteLine($"Message2: 0x{Convert.ToHexString(message2)}");
+
+
+        // Act
+        (byte[] BlindedMessage, BigInteger BlindingFactor) blinded = rsaBlindSigner.Blind(message1, keys.PublicKey);
+        BigInteger blindSignature = rsaBlindSigner.Sign(blinded.BlindedMessage, keys.PrivateKey);
+        BigInteger signature = rsaBlindSigner.Unblind(blindSignature, blinded.BlindingFactor, keys.PublicKey);
+
+        bool result = rsaBlindSigner.Verify(signature, message2, keys.PublicKey); // Verify wrong message
+
+        // Assert
+        result.Should().BeFalse();
     }
 }
